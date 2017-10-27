@@ -1,6 +1,6 @@
 import csv
 from testdata import REFILLS_FILE
-
+from security_tags import SecurityTags
 
 class Refill(object):
     """Create instances of a med refill; also maintains complete refills lists by patient id"""
@@ -48,6 +48,8 @@ class Refill(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags("medications", prefix + self.pid)
+
         out = {
             "request": {
                 "method": "PUT",
@@ -59,6 +61,7 @@ class Refill(object):
                 "subject"     : {
                     "reference": "Patient/" + prefix + self.pid
                 },
+                "meta": security_tags.get_security_tags(),
                 "text": {
                     "status": "generated",
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">' +

@@ -23,6 +23,8 @@ from binary              import Binary
 from allergy             import Allergy
 from clinicalnote        import ClinicalNote
 from practitioner        import Practitioner
+from coverage            import Coverage
+from explanation_of_benefit import ExplanationOfBenefit
 
 GENERATION_MAP = {
     "patient"      : True,
@@ -38,7 +40,9 @@ GENERATION_MAP = {
     "Meds"         : True, # includes Refills
     "Documents"    : True,
     "Allergies"    : True,
-    "ClinicalNotes": True
+    "ClinicalNotes": True,
+    "Coverage"      : True,
+    "ExplanationOfBenefit": True
 }
 
 SYSTEMS = {
@@ -274,6 +278,21 @@ class FHIRSamplePatient(object):
                     bundle["entry"].append(o.toJSON(prefix))
         return bundle
 
+    def set_coverages(self, bundle, prefix=None):
+        """Generates and appends a Coverage entry to the transaction"""
+        if GENERATION_MAP["Coverage"]:
+            if self.pid in Coverage.coverages:
+                for o in Coverage.coverages[self.pid]:
+                    bundle["entry"].append(o.toJSON(prefix))
+        return bundle
+
+    def set_explanation_of_benefit(self, bundle, prefix=None):
+        if GENERATION_MAP["ExplanationOfBenefit"]:
+            if self.pid in ExplanationOfBenefit.explanation_of_benefits:
+                for o in ExplanationOfBenefit.explanation_of_benefits[self.pid]:
+                    bundle["entry"].append(o.toJSON(prefix))
+        return bundle
+
     def set_procedures(self, bundle, prefix=None):
         """Generates and appends a Procedure entry to the transaction"""
         if GENERATION_MAP["Procedures"]:
@@ -490,6 +509,12 @@ class FHIRSamplePatient(object):
 
         # condition
         bundle = self.set_conditions(bundle, prefix)
+
+        # coverage
+        bundle = self.set_coverages(bundle, prefix)
+
+        # explanation of benefits
+        bundle = self.set_explanation_of_benefit(bundle, prefix)
 
         # procedure
         bundle = self.set_procedures(bundle, prefix)

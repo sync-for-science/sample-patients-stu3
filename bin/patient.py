@@ -3,6 +3,7 @@ import csv
 from random import randint
 from testdata import rndDate, rndName, rndAddress, rndTelephone, toEmail, rndGestAge
 from testdata import PATIENTS_FILE, RI_PATIENTS_FILE
+from security_tags import SecurityTags
 
 XMLNS_HTML = "http://www.w3.org/1999/xhtml"
 
@@ -122,6 +123,8 @@ class Patient(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags("patient", prefix + self.pid)
+
         out = {
             "resourceType": "Patient",
             "id": self.pid,
@@ -147,6 +150,7 @@ class Patient(object):
                     "value" : self.pid
                 }
             ],
+            "meta": security_tags.get_security_tags(),
             "gender"   : self.gender,
             "birthDate": self.dob,
             "name": [

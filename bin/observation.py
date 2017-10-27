@@ -1,4 +1,5 @@
 from patient import Patient
+from security_tags import SecurityTags
 
 def escape(s):
     """Escapes a string to make it HTML-safe"""
@@ -24,6 +25,8 @@ def Observation(data, prefix=""):
         prefix += "-"
 
     patient = Patient.mpi[data["pid"]]
+
+    security_tags = SecurityTags(data["categoryCode"], prefix + data["pid"])
 
     out = {
         "resourceType": "Observation",
@@ -58,6 +61,7 @@ def Observation(data, prefix=""):
             ],
             "text": data["name"]
         },
+        "meta": security_tags.get_security_tags(),
         "subject": {
             "reference": "Patient/" + prefix + data["pid"]
         },

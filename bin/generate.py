@@ -15,6 +15,8 @@ from document      import Document
 from allergy       import Allergy
 from clinicalnote  import ClinicalNote
 from practitioner  import Practitioner
+from coverage  import Coverage
+from explanation_of_benefit  import ExplanationOfBenefit
 
 def initData():
     """Load data and mappings from Raw data files and mapping files"""
@@ -32,6 +34,8 @@ def initData():
     Allergy.load()
     ClinicalNote.load()
     Practitioner.load()
+    Coverage.load()
+    ExplanationOfBenefit.load()
 
 def displayPatientSummary(pid):
     """writes a patient summary to stdout"""
