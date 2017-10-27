@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+ sample-stu3:
+  build:
+   context: ./
+   dockerfile: Dockerfile
+  volumes:
+   - "/Users/mtmcduffie/src/apps/sample-patients-stu3/generated:/generated"
+   - "/Users/mtmcduffie/src/apps/sample-patients-stu3:/code"
