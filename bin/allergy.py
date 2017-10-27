@@ -106,7 +106,7 @@ class Allergy(object):
                 "meta": [
                     {"security": {
                         "system": self.security_system_cat,
-                        "code": "allergies"
+                        "code": "allergy"
                     }},
                     {"security": {
                         "system": self.security_system_usr,
