@@ -8,8 +8,6 @@ SYSTEMS = {
     "NDFRT" : "http://rxnav.nlm.nih.gov/REST/Ndfrt", #"http://hl7.org/fhir/ndfrt",
     "UNII"  : "http://fda.gov/UNII/", #"http://fdasis.nlm.nih.gov",
     "RXNORM": "http://www.nlm.nih.gov/research/umls/rxnorm", #"http://www.nlm.nih.gov/research/umls/rxnorm"
-    "SMART_SECURITY_CATEGORIES" : "http://smarthealthit.org/security/categories",
-    "SMART_SECURITY_PATIENT" : "http://smarthealthit.org/security/patient"
 }
 
 class Allergy(object):
@@ -40,8 +38,6 @@ class Allergy(object):
         self.reaction           = p['REACTION']
         self.snomed             = p['SNOMED']
         self.severity           = p['SEVERITY']
-        self.security_system_cat= SYSTEMS["SMART_SECURITY_CATEGORIES"]
-        self.security_system_pat= SYSTEMS["SMART_SECURITY_PATIENT"]
 
         if self.severity == 'mild':
             self.severity_code = 255604002
