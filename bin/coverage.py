@@ -5,13 +5,13 @@ from security_tags import SecurityTags
 class Coverage(object):
     """Create instances of Coverage"""
 
-    coverages = {} # Dictionary of condition lists, by patient id
+    coverages = {} # Dictionary of Coverage lists, by patient id
 
     @classmethod
     def load(cls):
-        """Loads patient condition observations"""
+        """Loads patient coverage records"""
 
-        # Loop through problems and build patient problem lists:
+        # Loop through coverages and build patient coverage lists:
         rows = csv.reader(file(COVERAGE_FILE,'U'), dialect='excel-tab')
         header = rows.next()
         for row in rows:
@@ -22,14 +22,14 @@ class Coverage(object):
         self.id = p['ID']
         self.pid = p['PID']
 
-        # Append problem to the patient's problem list:
+        # Append coverage to the patient's coverage list:
         if self.pid in self.__class__.coverages:
             self.__class__.coverages[self.pid].append(self)
         else:
             self.__class__.coverages[self.pid] = [self]
 
     def toJSON(self, prefix=""):
-        """Builds and returns the Condition JSON"""
+        """Builds and returns the Coverage JSON"""
 
         if prefix:
             prefix += "-"

@@ -9,7 +9,7 @@ class ExplanationOfBenefit(object):
 
     @classmethod
     def load(cls):
-        # Loop through problems and build patient problem lists:
+        # Loop through ExplanationOfBenefit and build patient ExplanationOfBenefit lists:
         rows = csv.reader(file(EOB_FILE,'U'), dialect='excel-tab')
         header = rows.next()
         for row in rows:
@@ -20,7 +20,7 @@ class ExplanationOfBenefit(object):
         self.id = p['ID']
         self.pid = p['PID']
 
-        # Append problem to the patient's problem list:
+        # Append ExplanationOfBenefit to the patient's ExplanationOfBenefit list:
         if self.pid in self.__class__.explanation_of_benefits:
             self.__class__.explanation_of_benefits[self.pid].append(self)
         else:
