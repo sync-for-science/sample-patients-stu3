@@ -2,6 +2,7 @@ import csv
 from testdata import SOCIALHISTORY_FILE
 from testdata import rndDate
 from patient import Patient
+from security_tags import SecurityTags
 
 SMOKINGCODES = {
     '428041000124106': 'Current some day smoker',
@@ -45,6 +46,8 @@ class SocialHistory(object):
 
         patient = Patient.mpi[self.pid]
 
+        security_tags = SecurityTags("smoking", prefix + self.pid)
+
         return {
             "request": {
                 "method": "PUT",
@@ -66,6 +69,7 @@ class SocialHistory(object):
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">' +
                            'Tobacco smoking status: %s</div>'%self.smokingStatusText
                 },
+                "meta": security_tags.get_security_tags(),
                 "performer": {
                     "reference": "Practitioner/" + prefix + "Practitioner-" + patient.gp
                 },

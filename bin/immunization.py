@@ -1,5 +1,6 @@
 import csv
 from testdata import IMMUNIZATIONS_FILE
+from security_tags import SecurityTags
 
 
 class Immunization(object):
@@ -38,6 +39,8 @@ class Immunization(object):
         cvx_system, cvx_id = data["CVX"].rsplit("cvx", 1)
         cvx_system += "cvx"
 
+        security_tags = SecurityTags("immunizations", prefix + data["PID"])
+
         out = {
             "request": {
                 "method": "PUT",
@@ -51,6 +54,7 @@ class Immunization(object):
                 "patient"     : {
                     "reference": "Patient/" + prefix + data["PID"]
                 },
+                "meta": security_tags.get_security_tags(),
                 "text": {
                     "status": "generated",
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">%s</div>'%data["CVX_title"]

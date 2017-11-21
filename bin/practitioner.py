@@ -1,5 +1,6 @@
 import csv
 from testdata import PRACTITIONERS_FILE
+from security_tags import SecurityTags
 
 class Practitioner(object):
 
@@ -40,6 +41,8 @@ class Practitioner(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags()
+
         out = {
             "request": {
                 "method": "PUT",
@@ -53,6 +56,7 @@ class Practitioner(object):
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">%s %s</div>'%(data["fname"], data["lname"])
                 },
                 "active": True,
+                "meta": security_tags.get_public_tags(),
                 "identifier": [
                     {
                         "use": "official",

@@ -1,14 +1,13 @@
 import csv
 from testdata import ALLERGIES_FILE
 
+from security_tags import SecurityTags
 
 SYSTEMS = {
     "SNOMED": "http://snomed.info/sct",
     "NDFRT" : "http://rxnav.nlm.nih.gov/REST/Ndfrt", #"http://hl7.org/fhir/ndfrt",
     "UNII"  : "http://fda.gov/UNII/", #"http://fdasis.nlm.nih.gov",
     "RXNORM": "http://www.nlm.nih.gov/research/umls/rxnorm", #"http://www.nlm.nih.gov/research/umls/rxnorm"
-    "SMART_SECURITY_CATEGORIES" : "http://smarthealthit.org/security/categories",
-    "SMART_SECURITY_USERS" : "http://smarthealthit.org/security/users"
 }
 
 class Allergy(object):
@@ -39,8 +38,6 @@ class Allergy(object):
         self.reaction           = p['REACTION']
         self.snomed             = p['SNOMED']
         self.severity           = p['SEVERITY']
-        self.security_system_cat= SYSTEMS["SMART_SECURITY_CATEGORIES"]
-        self.security_system_usr= SYSTEMS["SMART_SECURITY_USERS"]
 
         if self.severity == 'mild':
             self.severity_code = 255604002
@@ -65,7 +62,12 @@ class Allergy(object):
 
     def toJSON(self, prefix=""):
         """Builds and returns the AllergyIntolerance JSON"""
+
+        # This object will give us the required security tags.
+        security_tags = SecurityTags("allergy", prefix + self.pid)
+
         allergyString = "Sensitivity to "
+
         if self.allergen.startswith("No known"):
             allergyString = self.allergen
         else:
@@ -103,16 +105,8 @@ class Allergy(object):
                     ],
                     "text": self.allergen
                 },
-                "meta": [
-                    {"security": {
-                        "system": self.security_system_cat,
-                        "code": "allergy"
-                    }},
-                    {"security": {
-                        "system": self.security_system_usr,
-                        "code": self.pid
-                    }}
-                ]
+                "meta": security_tags.get_security_tags()
+
             }
         }
 

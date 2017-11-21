@@ -1,4 +1,5 @@
 from patient import Patient
+from security_tags import SecurityTags
 
 def BloodPressure(bp, prefix=""):
     """Generates BloodPressure Observation JSON object"""
@@ -14,6 +15,8 @@ def BloodPressure(bp, prefix=""):
 
     patient = Patient.mpi[bp["pid"]]
 
+    security_tags = SecurityTags("vital-signs", prefix + bp["pid"])
+
     out = {
         "resourceType": "Observation",
         "id": prefix + bp["id"],
@@ -28,6 +31,7 @@ def BloodPressure(bp, prefix=""):
                    "%s: Blood pressure %s/%s mmHg</div>" %
                    (bp["date"], bp["systolic"], bp["diastolic"])
         },
+        "meta": security_tags.get_security_tags(),
         "category": [
             {
                 "coding": {

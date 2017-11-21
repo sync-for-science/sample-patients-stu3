@@ -1,5 +1,6 @@
 import csv
 from testdata import MEDS_FILE
+from security_tags import SecurityTags
 
 
 class Med(object):
@@ -55,6 +56,8 @@ class Med(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags("medications", prefix + self.pid)
+
         out = {
             "request": {
                 "method": "PUT",
@@ -77,7 +80,7 @@ class Med(object):
 
                 # proposal | plan | order | instance-order
                 "intent": "order",
-
+                "meta": security_tags.get_security_tags(),
                 # Identifies the medication being requested. This is a link to a
                 # resource that represents the medication which may be the details
                 # of the medication or simply an attribute carrying a code that

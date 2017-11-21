@@ -28,6 +28,8 @@ CLINICAL_NOTES_FILE = DATA_PATH + 'clinicalnotes.txt'
 DOCUMENTS_FILE = DATA_PATH + 'documents.txt'
 IMAGINGSTUDIES_FILE = DATA_PATH + 'imagingstudies.txt'
 PRACTITIONERS_FILE = DATA_PATH + 'practitioners.txt'
+COVERAGE_FILE = DATA_PATH + 'coverage.txt'
+EOB_FILE = DATA_PATH + 'explanation_of_benefit.txt'
 
 # Mapping file names:
 LOINC_FILE = MAP_PATH + 'short_loinc.txt'

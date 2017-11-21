@@ -1,4 +1,5 @@
 from patient import Patient
+from security_tags import SecurityTags
 
 def GeneralObservation(data, prefix=""):
     """Builds and returns the List JSON"""
@@ -7,6 +8,8 @@ def GeneralObservation(data, prefix=""):
         prefix += "-"
 
     patient = Patient.mpi[data["pid"]]
+
+    security_tags = SecurityTags(data["categoryCode"], prefix + data["pid"])
 
     out = {
         "resourceType": "Observation",
@@ -19,6 +22,7 @@ def GeneralObservation(data, prefix=""):
                 "value" : data["id"]
             }
         ],
+        "meta": security_tags.get_security_tags(),
         "text": {
             "div": '<div xmlns="http://www.w3.org/1999/xhtml">%s</div>' % data["name"]
         },

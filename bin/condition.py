@@ -1,6 +1,6 @@
 import csv
 from testdata import PROBLEMS_FILE
-
+from security_tags import SecurityTags
 
 class Condition(object):
     """Create instances of Problem; also maintains complete condition lists by patient id"""
@@ -37,6 +37,8 @@ class Condition(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags("problems", prefix + self.pid)
+
         out = {
             "request": {
                 "method": "PUT",
@@ -53,6 +55,7 @@ class Condition(object):
                     "status": "generated",
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">%s</div>' % self.name
                 },
+                "meta": security_tags.get_security_tags(),
                 "verificationStatus": "confirmed",
                 "onsetDateTime": self.start,
                 "code": {

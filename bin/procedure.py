@@ -1,5 +1,6 @@
 import csv
 from testdata import PROCEDURES_FILE
+from security_tags import SecurityTags
 
 
 class Procedure(object):
@@ -37,6 +38,8 @@ class Procedure(object):
         if prefix:
             prefix += "-"
 
+        security_tags = SecurityTags("procedures", prefix + self.pid)
+
         out = {
             "request": {
                 "method": "PUT",
@@ -49,6 +52,7 @@ class Procedure(object):
                 "subject"     : {
                     "reference": "Patient/" + prefix + self.pid
                 },
+                "meta": security_tags.get_security_tags(),
                 "text": {
                     "status": "generated",
                     "div": '<div xmlns="http://www.w3.org/1999/xhtml">%s</div>' % self.name
