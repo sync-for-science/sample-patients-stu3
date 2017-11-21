@@ -106,6 +106,7 @@ class Allergy(object):
                     "text": self.allergen
                 },
                 "meta": security_tags.get_security_tags()
+
             }
         }
 
